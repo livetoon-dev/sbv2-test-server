@@ -135,6 +135,19 @@ async def lifespan(app: FastAPI):
                     )
                     print(f"モデル {config['model_id']} を正常に読み込みました")
                     
+                    # ウォームアップ用の推論を実行
+                    print(f"モデル {config['model_id']} のウォームアップを実行中...")
+                    warmup_text = "ウォームアップのための短いテキストです。"
+                    try:
+                        model = model_manager.get_model(config["model_id"])
+                        sampling_rate, _ = model.infer(
+                            text=warmup_text,
+                            speaker_id=0
+                        )
+                        print(f"モデル {config['model_id']} のウォームアップが完了しました")
+                    except Exception as e:
+                        print(f"ウォームアップ中にエラーが発生しました: {str(e)}")
+                    
                 except Exception as e:
                     print(f"モデル {config['model_id']} の読み込みに失敗しました: {str(e)}")
                     continue
@@ -158,6 +171,19 @@ async def lifespan(app: FastAPI):
             print("デフォルトモデルを初期化中...")
             model_manager.add_model(model_config, set_as_default=True)
             print("デフォルトモデルを正常に読み込みました")
+            
+            # デフォルトモデルのウォームアップ
+            print("デフォルトモデルのウォームアップを実行中...")
+            warmup_text = "ウォームアップのための短いテキストです。"
+            try:
+                model = model_manager.get_model("jvnv-F1-jp")
+                sampling_rate, _ = model.infer(
+                    text=warmup_text,
+                    speaker_id=0
+                )
+                print("デフォルトモデルのウォームアップが完了しました")
+            except Exception as e:
+                print(f"ウォームアップ中にエラーが発生しました: {str(e)}")
     
     except Exception as e:
         print(f"初期化中にエラーが発生しました: {str(e)}")
