@@ -1,0 +1,14 @@
+{
+    "models": [
+        {
+            "model_id": "uranai-emotion2",
+            "repo_id": "LiveTaro/uranai-emotion2",
+            "name": "占い師感情2",
+            "description": "感情表現が豊かな占い師の音声モデル",
+            "speakers": {
+                "0": "通常"
+            },
+            "is_default": true
+        }
+    ]
+} 
